@@ -1,0 +1,58 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "穴位查询"
+			}
+		},
+		{
+			"path": "pages/acupoints/acupoints",
+			"style": {
+				"navigationBarTitleText": "按穴位"
+			}
+		}, {
+			"path": "pages/serch/serch",
+			"style": {
+				"navigationBarTitleText": "搜索"
+			}
+		}, {
+			"path": "pages/Press/Press",
+			"style": {
+				"navigationBarTitleText": "按部位"
+			}
+		}, {
+			"path": "pages/case/case",
+			"style": {
+				"navigationBarTitleText": "案例展示"
+			}
+		}, {
+			"path": "pages/caseDetail/caseDetail",
+			"style": {
+				"navigationStyle": "custom" //取消默认的原生导航栏
+			}
+		}, {
+			"path": "pages/acupointsDetail/acupointsDetail",
+			"style": {
+				"navigationStyle": "custom" //取消默认的原生导航栏
+			}
+		}, {
+			"path": "pages/symptom/symptom",
+			"style": {
+				"navigationBarTitleText": "按症状"
+			}
+		}, {
+			"path": "pages/symptomDetail/symptomDetail",
+			"style": {
+				"navigationStyle": "custom" //取消默认的原生导航栏
+			}
+		}
+
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	}
+}

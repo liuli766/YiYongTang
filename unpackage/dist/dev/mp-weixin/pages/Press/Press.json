@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "按部位",
+  "usingComponents": {
+    "uni-search-bar": "/components/uni-search-bar/uni-search-bar"
+  }
+}
