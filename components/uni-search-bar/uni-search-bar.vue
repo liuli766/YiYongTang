@@ -134,8 +134,8 @@
 		/* #endif */
 		overflow: hidden;
 		position: relative;
-		// flex: 1;
-		width: 690upx;
+		flex: 1;
+		// width: 690upx;
 		justify-content: center;
 		flex-direction: row;
 		align-items: center;

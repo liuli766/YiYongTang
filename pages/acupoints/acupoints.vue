@@ -1,20 +1,22 @@
 <template>
+	<!--  //按穴位 -->
 	<view>
-		<uni-search-bar :radius="100" placeholder="输入穴位名称/拼音" cancelButton='none' @input="search"></uni-search-bar>
-		<view class="hotserch">
+		<uni-search-bar :radius="100" placeholder="输入穴位名称/拼音" cancelButton='auto' @cancel="Cancel" @input="search" cancelText='取消'></uni-search-bar>
+		<view class="hotserch" v-if="hotserch">
 			<view class="bar flex">
 				<view class="flex">
 					<view class="line"></view>
 					<view class="title">热门搜索</view>
 				</view>
-
 			</view>
 			<view class="serchcontent flex-a-c flex-warp-col-b">
-				<text class="flex-c" v-for="(val,k) in 8" :key="k">丰隆穴</text>
+				<text class="flex-c" v-for="(val,k) in hotList" :key="k" @tap="Fserch(val)">{{val}}</text>
 			</view>
+			
 		</view>
+		
 		<!-- IndexedList  -->
-		<uni-indexed-list></uni-indexed-list>
+		<uni-indexed-list :acupointsList="acupointsList" ></uni-indexed-list>
 	</view>
 </template>
 
@@ -28,12 +30,71 @@
 		},
 		data() {
 			return {
-
+				acupointsList: [],
+				SechData: [],
+				serchbox: false,
+				hotserch: true,
+				hotList:[],
 			}
 		},
+		onLoad() {
+			uni.request({
+				url: 'https://health.jisapp.cn/mobile/IndexInfo/acu_cate',
+				header: {
+					"X-Requested-With": "XMLhttpsRequest"
+				},
+				method: 'POST',
+				success: (res) => {
+					this.acupointsList = res.data.data
+					console.log(this.acupointsList)
+				}
+			});
+			uni.request({
+				url: 'https://health.jisapp.cn/mobile/Config/sys_config',
+				header: {
+					"X-Requested-With": "XMLhttpsRequest"
+				},
+				method: 'POST',
+				success: (res) => {
+					
+					this.hotList=res.data.data.hot_search
+					this.hotList=this.hotList.split(",")
+					console.log(this.hotList)
+				}
+			});
+		},
 		methods: {
-			search(value) {
-				console.log(value)
+			Fserch(value){
+				this.search(value)
+			},
+			search(value) { //搜索功能
+				this.serchbox = true;
+				this.hotserch = false;
+				let keyword = value.value||value
+				uni.request({
+					url: 'https://health.jisapp.cn/mobile/IndexInfo/acu_cate',
+					header: {
+						"X-Requested-With": "XMLhttpsRequest"
+					},
+					data: {
+						cate_name:keyword,
+					},
+					method: 'POST',
+					success: (res) => {
+						this.acupointsList = res.data.data
+						console.log(this.acupointsList)
+					}
+				});
+			},
+			Cancel() {
+				this.hotserch = true;
+				this.serchbox = false;
+			},
+			goacupointsDetail(c) {
+				console.log(c)
+				uni.navigateTo({
+					url: `../../pages/acupointsDetail/acupointsDetail?title=${c.id}`
+				});
 			}
 		}
 	}
@@ -69,7 +130,7 @@
 			margin: 0 30upx;
 
 			text {
-				width: 161upx;
+				padding: 0 30upx;
 				height: 64upx;
 				border: 1px solid #CCCCCC;
 				opacity: 0.48;
@@ -82,4 +143,5 @@
 			}
 		}
 	}
+
 </style>

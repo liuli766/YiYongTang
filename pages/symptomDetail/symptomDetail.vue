@@ -1,6 +1,6 @@
 <template>
 	<view class="backgroundf8">
-		<uni-nav-bar left-icon="back" :title="title" shadow=true @clickLeft='goback' status-bar=true></uni-nav-bar>
+		<uni-nav-bar left-icon="back" :title="illDetail.ill_name" shadow=true @clickLeft='goback' status-bar=true fixed=true></uni-nav-bar>
 		<view class="main">
 			<view class="contentbox">
 				<view class="bar flex">
@@ -8,6 +8,45 @@
 						<view class="line"></view>
 						<view class="title">简介</view>
 					</view>
+				</view>
+				<view v-html="illDetail.description" class="styleinfo">
+				</view>
+			</view>
+			<view class="contentbox">
+				<view class="bar flex">
+					<view class="flex">
+						<view class="line"></view>
+						<view class="title">调养</view>
+					</view>
+				</view>
+				<view v-html="illDetail.care_info" class="styleinfo">
+				</view>
+				
+			</view>
+			<view class="page" v-for="(item,k) in illDetail.video" :key="k">
+				<video class="video" id="demoVideo" :controls="true" :src="item">
+				</video>
+						
+			</view>
+			<view class="contentbox">
+				<view class="bar flex">
+					<view class="flex">
+						<view class="line"></view>
+						<view class="title">养生小贴士</view>
+					</view>
+				</view>
+				<view v-html="illDetail.tips" class="styleinfo">
+				</view>
+			</view>
+			<view class="contentbox">
+				<view class="bar flex">
+					<view class="flex">
+						<view class="line"></view>
+						<view class="title">调理穴位</view>
+					</view>
+				</view>
+				<view class="" v-for="(item,k) in illDetail.acu" @tap="goacupoints(item)">
+					<image :src="item.sub.head_pic" style="width: 100%;" ></image>
 				</view>
 			</view>
 			<view class="footer">
@@ -22,7 +61,7 @@
 
 			</view>
 		</view>
-		
+
 	</view>
 </template>
 
@@ -34,12 +73,25 @@
 		},
 		data() {
 			return {
-				title: ''
+				illDetail: {}
 			}
 		},
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
 			console.log(option); //打印出上个页面传递的参数。
-			this.title = option.title
+			uni.request({
+				url: 'https://health.jisapp.cn/mobile/IndexInfo/ill_detail',
+				header: {
+					"X-Requested-With": "XMLhttpsRequest"
+				},
+				data: {
+					ill_id: option.id,
+				},
+				method: 'POST',
+				success: (res) => {
+					this.illDetail = res.data.data
+					console.log(this.illDetail)
+					}
+			});
 		},
 		methods: {
 			goback() {
@@ -47,11 +99,23 @@
 					delta: 1
 				}); //返回上一层路由
 			},
-			goIndex(){
+			goIndex() {
 				uni.navigateTo({
-					url:'../index/index'
+					url: '../index/index'
 				})
 			},
+			onShareAppMessage: function(e) {
+				return {
+					title: this.illDetail.cate_name,
+					path: 'pages/symptomDetail/symptomDetail'
+				}
+			},
+			goacupoints(c){
+				uni.navigateTo({
+					url:`../acupointsDetail/acupointsDetail?title=${c.sub.id}`
+				})
+			}
+
 		}
 	}
 </script>
@@ -61,8 +125,41 @@
 		height: var(--status-bar-height);
 		width: 100%;
 	}
+	.page video {
+		width: 690upx;
+		height: 320upx;
+		border-radius: 6upx;
+		margin: 0 30rpx;
 
+	}
 	.main {
-		margin: 30upx;
+		margin-bottom: 120upx;
+		
+		.styleinfo {
+			font-size: 28upx;
+			font-family: PingFang SC;
+			font-weight: 500;
+			color: #333333;
+			line-height: 52upx;
+			image{
+				max-width: 100% !important;
+			}
+		}
+		
+		
+
+		.page video {
+			width: 690upx;
+			height: 320upx;
+			border-radius: 6upx;
+		}
+
+		.tips {
+			font-size: 24upx;
+			font-family: PingFang SC;
+			font-weight: 500;
+			color: #999999;
+			line-height: 44upx;
+		}
 	}
 </style>

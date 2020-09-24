@@ -1,7 +1,7 @@
 /**
  * 这里是uni-app内置的常用样式变量
  *
- * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * uni-app 官方扩展插件及插件市场（httpss://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
  * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
  *
  */
@@ -49,6 +49,15 @@
 	position: fixed;
 	width: 100%;
 	overflow: scroll;
+	padding: 0 15px;
+	box-sizing: border-box;
+	.subtit{
+		font-size: 24upx;
+		font-family: PingFang SC;
+		font-weight: 500;
+		color: #999999;
+		margin-top: 20upx;
+	}
 }
 .backgroundf8{
 	background-color: #F8F8F8;
@@ -130,8 +139,13 @@
 			position: fixed;
 			width: 100%;
 			display: flex;
-			bottom: 80upx;
-
+			bottom: 0upx;
+			height: 100upx;
+			background: #fff;
+			z-index: 9999999;
+			justify-content: space-between;
+			padding: 0 30upx;
+			box-sizing: border-box;
 			text {
 				font-size: 28upx;
 				font-family: PingFang SC;
@@ -153,13 +167,41 @@
 					height: 48upx;
 					margin-right: 8upx;
 					margin-top: 0;
+					background: #FD9558;
 				}
 			}
-
 			.btnb {
 				background: #5858FD;
-				margin-left: 30upx;
+				image{
+					background:#5858FD;
+				}
 			}
+		}
+		/*搜索内容样式*/
+		.empty {
+			display: flex;
+			justify-content: center;
+		
+			image {
+				width: 340upx;
+				height: 340upx;
+			}
+		}
+		
+		.acu {
+			margin: 30upx;
+		}
+		
+		.serchlist {
+			border-bottom: 1px solid #EEEEEE;
+			padding-bottom: 20upx;
+			font-size: 28upx;
+			font-family: PingFang SC;
+			font-weight: 500;
+			color: #333333;
+			align-items: center;
+			justify-content: center;
+			margin-right: 16upx;
 		}
 /* 颜色变量 */
 

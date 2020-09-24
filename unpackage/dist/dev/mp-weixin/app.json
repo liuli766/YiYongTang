@@ -1,8 +1,9 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/acupoints/acupoints",
+    "pages/login/login",
     "pages/serch/serch",
+    "pages/acupoints/acupoints",
     "pages/Press/Press",
     "pages/case/case",
     "pages/caseDetail/caseDetail",
@@ -13,11 +14,14 @@
   "subPackages": [],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
-  "permission": {},
+  "permission": {
+    "scope.userLocation": {
+      "desc": "获取位置"
+    }
+  },
   "usingComponents": {},
-  "sitemapLocation": "sitemap21.json"
+  "sitemapLocation": "sitemap49.json"
 }

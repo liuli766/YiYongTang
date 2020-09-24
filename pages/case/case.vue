@@ -1,15 +1,16 @@
 <template>
+	<!-- 案例展示 -->
 	<view class="content">
 		<view class="banner">
-			<image src="../../static/index/banner.png"></image>
+			<image :src="case_banner"></image>
 		</view>
-		<view class="item" @tap="goDetail">
-			<image src="../../static/item.png"></image>
+		<view class="item" @tap="goDetail(item)" v-for="(item,k) in caseList" :key="k">
+			<image :src="item.head_pic"></image>
 			<view class="item-box">
-				<text class="title"> 甲状腺功能亢进症</text>
-				<text class="intro two-ell"> 心悸、出汗、进食和便次增多和体重减 少,多数患者还常同时有突眼,多数患者还常同时有突眼</text>
+				<text class="title">{{item.case_title}}</text>
+				<text class="intro two-ell" v-html="item.description"></text>
 				<view class="item-bot flex-b-c">
-					<text>2020/09/08</text>
+					<text>{{item.create_time}}</text>
 					<text>甲亢</text>
 				</view>
 			</view>
@@ -21,13 +22,30 @@
 	export default {
 		data() {
 			return {
-
+				caseList:[],
+				case_banner:uni.getStorageSync('case_banner')
 			}
 		},
+		onLoad: function() { //option为object类型，会序列化上个页面传递的参数
+			uni.request({
+				url: 'https://health.jisapp.cn/mobile/IndexInfo/case_list',
+				header: {
+					"X-Requested-With": "XMLhttpsRequest"
+				},
+				data: {
+					page: 1,
+				},
+				method: 'POST',
+				success: (res) => {
+					this.caseList = res.data.data.list
+					console.log(this.caseList)
+				}
+			});
+		},
 		methods: {
-			goDetail() {
+			goDetail(item) {
 				uni.navigateTo({
-					url: `../caseDetail/caseDetail?title=甲状腺功能亢进症`
+					url: `../caseDetail/caseDetail?title=${item.id}`
 				});
 			}
 		}
@@ -37,9 +55,11 @@
 <style lang="scss" scoped>
 	.content {
 		.banner {
+			width: 100%;
+			height: 300upx;
 			image {
 				width: 100%;
-				height: 300upx;
+				height: 100%;
 			}
 
 			margin-bottom: 30upx;
@@ -47,17 +67,24 @@
 
 		.item {
 			display: flex;
-
+			justify-content: flex-start;
+			padding: 30upx;
+			border-bottom: 1upx solid #e5e5e5;
+			
 			image {
+				width: 240upx;
 				height: 170upx;
 				margin-right: 30upx;
-				margin-left: 30upx;
+				// margin-left: 30upx;
+				
 			}
 
 			.item-box {
+				flex: 1;
 				display: flex;
 				flex-wrap: wrap;
-				margin-right: 31upx;
+				// margin-right: 31upx;
+				// height: 170upx;
 
 				.title {
 					font-size: 32upx;

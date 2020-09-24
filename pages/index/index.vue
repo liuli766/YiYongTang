@@ -1,14 +1,20 @@
 <template>
 	<view class="content">
 		<view class="serch" @tap="Serch">
-			<input type="text" />
+			<input type="text" disabled="disabled" />
 			<view class="txt flex-c">
 				<image src="../../static/index/serch.png"></image>
 				<text>搜索</text>
 			</view>
 		</view>
 		<view class="banner">
-			<image src="../../static/index/banner.png"></image>
+			<swiper class="swiper" indicator-dots="false" autoplay="true" interval=2000 duration=500>
+				<swiper-item v-for="(item,k) in swiperlist" :key="k">
+					<view class="swiper-item uni-bg-red">
+						<image :src="item.src"></image>
+					</view>
+				</swiper-item>
+			</swiper>
 		</view>
 		<view class="grid flex-warp">
 			<view class="grid_child flex-c" @tap="Press">
@@ -35,37 +41,94 @@
 	export default {
 		data() {
 			return {
-
+				swiperlist: [],
+				link: 'https://health.jisapp.cn',
+				isCanUse: uni.getStorageSync('isCanUse')
 			}
 		},
 		onLoad() {
 
+			uni.request({
+				url: 'https://health.jisapp.cn/mobile/Config/banner', //仅为示例，并非真实接口地址。
+				header: {
+					"X-Requested-With": "XMLhttpsRequest"
+				},
+				method: 'POST',
+				success: (res) => {
+					this.swiperlist = res.data.data
+					console.log(this.swiperlist)
+				}
+			});
 		},
 		methods: {
+			getlogin() {
+				
+				if (!this.isCanUse) {
+					console.log(!this.isCanUse)
+					uni.showModal({
+						title: '请先登录',
+						success: function(res) {
+							if (res.confirm) {
+								console.log('用户点击确定');
+								uni.navigateTo({
+									url: '../login/login'
+								});
+							} else if (res.cancel) {
+								console.log('用户点击取消');
+								return false;
+							}
+
+						}
+					})
+					return false;
+				}else{
+					return true;
+				}
+			},
 			Serch() {
-				uni.navigateTo({
-					url: '../serch/serch'
-				});
+				let a=this.getlogin()
+				if(a){
+					uni.navigateTo({
+						url: '../serch/serch'
+					});
+				}
+				
 			},
 			Press() { //按部位
+			let a=this.getlogin()
+			if(a){
 				uni.navigateTo({
 					url: '../Press/Press'
 				});
+			}
+				
 			},
 			Case() { //案例展示
-				uni.navigateTo({
-					url: '../case/case'
-				});
+				let a=this.getlogin()
+				if(a){
+					uni.navigateTo({
+						url: '../case/case'
+					});
+				}
+				
 			},
 			Acupoints() { //按穴位
-				uni.navigateTo({
-					url: '../acupoints/acupoints'
-				});
+				let a=this.getlogin()
+				if(a){
+					uni.navigateTo({
+						url: '../acupoints/acupoints'
+					});
+				}
+				
 			},
 			symptom() {
-				uni.navigateTo({ //按症状
-					url: '../symptom/symptom'
-				});
+				let a=this.getlogin()
+				if(a){
+					uni.navigateTo({ //按症状
+						url: '../symptom/symptom'
+					});
+				}
+				
 			}
 		}
 	}
@@ -90,6 +153,7 @@
 		.grid {
 			margin-bottom: 80upx;
 			padding-bottom: 80upx;
+
 			.grid_child {
 				flex-direction: column;
 				width: 285upx;

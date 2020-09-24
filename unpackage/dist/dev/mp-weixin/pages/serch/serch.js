@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniSearchBar: function() {
-    return __webpack_require__.e(/*! import() | components/uni-search-bar/uni-search-bar */ "components/uni-search-bar/uni-search-bar").then(__webpack_require__.bind(null, /*! @/components/uni-search-bar/uni-search-bar.vue */ 83))
+    return __webpack_require__.e(/*! import() | components/uni-search-bar/uni-search-bar */ "components/uni-search-bar/uni-search-bar").then(__webpack_require__.bind(null, /*! @/components/uni-search-bar/uni-search-bar.vue */ 91))
   }
 }
 var render = function() {
@@ -134,7 +134,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(n);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _iterableToArray(iter) {if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) return _arrayLikeToArray(arr);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}var uniSearchBar = function uniSearchBar() {__webpack_require__.e(/*! require.ensure | components/uni-search-bar/uni-search-bar */ "components/uni-search-bar/uni-search-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-search-bar/uni-search-bar.vue */ 83));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniSearchBar = function uniSearchBar() {__webpack_require__.e(/*! require.ensure | components/uni-search-bar/uni-search-bar */ "components/uni-search-bar/uni-search-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-search-bar/uni-search-bar.vue */ 91));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -190,38 +190,144 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   data: function data() {
     return {
       hotSerchList: ['丰隆穴'],
-      sechcontent: '',
       serchbox: false,
       hotserch: true,
-      SechList: [{
-        tit: '感冒',
-        itro: '上呼吸道感染、伤风' },
+      SechData: [], //搜索展示的内容
+      hotList: [],
+      isCanUse: uni.getStorageSync('isCanUse'),
+      historyList: [],
+      value: '' };
 
-      {
-        tit: '风寒',
-        itro: '上呼吸道感染、伤风' }],
+  },
+  onLoad: function onLoad() {var _this = this;
+    this.loadOldKeyword();
+    uni.request({
+      url: 'https://health.jisapp.cn/mobile/Config/sys_config',
+      header: {
+        "X-Requested-With": "XMLhttpsRequest" },
 
+      method: 'POST',
+      success: function success(res) {
 
-      SechData: [] //搜索展示的内容
-    };
+        _this.hotList = res.data.data.hot_search;
+        _this.hotList = _this.hotList.split(",");
+        console.log(_this.hotList, '热门');
+      } });
+
   },
   methods: {
-    ClearHistory: function ClearHistory() {
+    //加载历史搜索
+    loadOldKeyword: function loadOldKeyword() {var _this2 = this;
+      uni.getStorage({
+        key: 'OldKeys',
+        success: function success(res) {
+          var OldKeys = JSON.parse(res.data);
+          _this2.historyList = OldKeys;
+        } });
 
     },
-    search: function search(value) {//搜索功能
-      var val = value.value;
-      var sechArr = _toConsumableArray(this.SechList);
-      this.SechData = sechArr.filter(function (item) {return item.tit.indexOf(val) !== -1;});
-      if (val == '') {
-        this.SechData.length = 0;
-      }
-      console.log(this.SechData);
+    ClearHistory: function ClearHistory() {var _this3 = this;
+      uni.showModal({
+        content: '确定清除历史搜索记录？',
+        success: function success(res) {
+          if (res.confirm) {
+            console.log('用户点击确定');
+            _this3.historyList = [];
+            uni.removeStorage({
+              key: 'OldKeys' });
+
+          } else if (res.cancel) {
+            console.log('用户点击取消');
+          }
+        } });
+
     },
-    Click: function Click() {
+    Fserch: function Fserch(value) {
+      this.search(value);
+    },
+    search: function search(value) {var _this4 = this; //搜索功能
       this.serchbox = true;
       this.hotserch = false;
+      var keyword = value.value || value;
+      uni.request({
+        url: 'https://health.jisapp.cn/mobile/IndexInfo/search_list',
+        header: {
+          "X-Requested-With": "XMLhttpsRequest" },
+
+        data: {
+          keyword: keyword },
+
+        method: 'POST',
+        success: function success(res) {
+          console.log(res.data);
+          _this4.SechData = res.data.data;
+        } });
+
+      if (keyword == '') {
+        this.hotserch = true;
+        this.serchbox = false;
+      }
+    },
+    Cancel: function Cancel() {
+      this.hotserch = true;
+      this.serchbox = false;
+    },
+    godetail: function godetail(c) {
+      uni.navigateTo({ //按部位
+        url: "../symptomDetail/symptomDetail?id=".concat(c.id) });
+
+    },
+    goacupointsDetail: function goacupointsDetail(c) {var _this5 = this;
+      uni.navigateTo({ //按部位
+        url: "../symptomDetail/symptomDetail?id=".concat(c.id) });
+
+      // 保存历史记录
+      uni.getStorage({
+        key: 'OldKeys',
+        success: function success(res) {
+          console.log(2);
+          console.log(res.data);
+          var OldKeys = JSON.parse(res.data);
+
+          var findIndex = OldKeys.indexOf({
+            key: 'OldKeys',
+            data: JSON.stringify(OldKeys) });
+
+          if (findIndex == -1) {
+            OldKeys.unshift({
+              key: 'OldKeys',
+              data: JSON.stringify(OldKeys) });
+
+          } else {
+            OldKeys.splice(findIndex, 1);
+            OldKeys.unshift({
+              key: 'OldKeys',
+              data: JSON.stringify(OldKeys) });
+
+          }
+          //最多10个纪录
+          OldKeys.length > 10 && OldKeys.pop();
+          uni.setStorage({
+            key: 'OldKeys',
+            data: JSON.stringify(OldKeys) });
+
+          _this5.historyList = OldKeys; //更新历史搜索
+        },
+        fail: function fail(e) {
+          console.log(1);
+          var OldKeys = [{
+            ill_name: c.ill_name,
+            id: c.id }];
+
+          uni.setStorage({
+            key: 'OldKeys',
+            data: JSON.stringify(OldKeys) });
+
+          _this5.historyList = OldKeys; //更新历史搜索
+        } });
+
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

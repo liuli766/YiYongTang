@@ -168,40 +168,103 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
-    return {};
-
+    return {
+      swiperlist: [],
+      link: 'https://health.jisapp.cn',
+      isCanUse: uni.getStorageSync('isCanUse') };
 
   },
-  onLoad: function onLoad() {
+  onLoad: function onLoad() {var _this = this;
+
+    uni.request({
+      url: 'https://health.jisapp.cn/mobile/Config/banner', //仅为示例，并非真实接口地址。
+      header: {
+        "X-Requested-With": "XMLhttpsRequest" },
+
+      method: 'POST',
+      success: function success(res) {
+        _this.swiperlist = res.data.data;
+        console.log(_this.swiperlist);
+      } });
 
   },
   methods: {
+    getlogin: function getlogin() {
+
+      if (!this.isCanUse) {
+        console.log(!this.isCanUse);
+        uni.showModal({
+          title: '请先登录',
+          success: function success(res) {
+            if (res.confirm) {
+              console.log('用户点击确定');
+              uni.navigateTo({
+                url: '../login/login' });
+
+            } else if (res.cancel) {
+              console.log('用户点击取消');
+              return false;
+            }
+
+          } });
+
+        return false;
+      } else {
+        return true;
+      }
+    },
     Serch: function Serch() {
-      uni.navigateTo({
-        url: '../serch/serch' });
+      var a = this.getlogin();
+      if (a) {
+        uni.navigateTo({
+          url: '../serch/serch' });
+
+      }
 
     },
     Press: function Press() {//按部位
-      uni.navigateTo({
-        url: '../Press/Press' });
+      var a = this.getlogin();
+      if (a) {
+        uni.navigateTo({
+          url: '../Press/Press' });
+
+      }
 
     },
     Case: function Case() {//案例展示
-      uni.navigateTo({
-        url: '../case/case' });
+      var a = this.getlogin();
+      if (a) {
+        uni.navigateTo({
+          url: '../case/case' });
+
+      }
 
     },
     Acupoints: function Acupoints() {//按穴位
-      uni.navigateTo({
-        url: '../acupoints/acupoints' });
+      var a = this.getlogin();
+      if (a) {
+        uni.navigateTo({
+          url: '../acupoints/acupoints' });
+
+      }
 
     },
     symptom: function symptom() {
-      uni.navigateTo({ //按症状
-        url: '../symptom/symptom' });
+      var a = this.getlogin();
+      if (a) {
+        uni.navigateTo({ //按症状
+          url: '../symptom/symptom' });
+
+      }
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

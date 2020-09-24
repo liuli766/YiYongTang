@@ -1,5 +1,6 @@
 {
   "navigationBarTitleText": "按穴位",
+  "navigationBarBackgroundColor": "#fff",
   "usingComponents": {
     "uni-search-bar": "/components/uni-search-bar/uni-search-bar",
     "uni-indexed-list": "/components/uni-indexed-list/uni-indexed-list"

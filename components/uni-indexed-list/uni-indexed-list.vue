@@ -1,20 +1,20 @@
 <template>
 	<view>
 		<scroll-view class="scroller" :scroll-into-view="toView" scroll-y="true" scroll-with-animation="true">
-			<view class="hotserch" v-for="(val,k) in list" :id="val.letter">
+			<view class="hotserch" v-for="(val,k) in acupointsList" :id="val.initial">
 				<view class="bar flex">
 					<view class="flex">
 						<view class="line"></view>
-						<view class="title" ref='letter'>{{val.letter}}</view>
+						<view class="title" ref='letter'>{{val.initial}}</view>
 					</view>
 				</view>
 				<view class="serchcontent">
-					<text class="flex-c" v-for="(c,v) in val.data" :key="v" @tap="goacupointsDetail">{{c}}</text>
+					<text class="flex-c" v-for="(c,v) in val.list" :key="v" @tap="goacupointsDetail(c)" style="text-align: center;">{{c.cate_name}}</text>
 				</view>
 			</view>
 		</scroll-view>
 		<view class="sildebar">
-			<text v-for="(val,k) in list" @click="ClickChose(val,k,$event)" :data-id="val.letter">{{val.letter}}</text>
+			<text v-for="(val,k) in acupointsList" @click="ClickChose(val,k,$event)" :data-id="val.initial">{{val.initial}}</text>
 		</view>
 		<view class="module flex-c" v-if="clickShow">
 			<text>{{chosedVal}}</text>
@@ -23,66 +23,14 @@
 </template>
 <script>
 	export default {
+		props:{
+			acupointsList:{
+				type:Array
+			}
+		},
 		data() {
 			return {
-				list: [{
-						"letter": "A",
-						"data": [
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴"
-						]
-					}, {
-						"letter": "B",
-						"data": [
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴"
-						]
-					},
-					{
-						"letter": "C",
-						"data": [
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴"
-						]
-					}, {
-						"letter": "D",
-						"data": [
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴"
-						]
-					}, {
-						"letter": "E",
-						"data": [
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴"
-						]
-					}, {
-						"letter": "F",
-						"data": [
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴",
-							"丰隆穴"
-						]
-					}
-				],
+				list: [],
 				chosedVal: '',
 				clickShow: false,
 				toView: '',
@@ -97,11 +45,11 @@
 				}, 1000);
 				var choseIndex = e.currentTarget.dataset.id;
 				this.toView = choseIndex;
-				this.chosedVal = val.letter		
+				this.chosedVal = val.initial		
 			},
-			goacupointsDetail(){
-				uni.navigateTo({ //按症状
-					url: `../../pages/acupointsDetail/acupointsDetail?title=丰隆穴`
+			goacupointsDetail(c){
+				uni.navigateTo({
+					url: `../../pages/acupointsDetail/acupointsDetail?title=${c.id}`
 				});
 			}
 		},
@@ -142,7 +90,7 @@
 			display: flex;
 
 			text {
-				width: 161upx;
+				// width: 161upx;
 				height: 64upx;
 				border: 1px solid #CCCCCC;
 				opacity: 0.48;
@@ -152,6 +100,7 @@
 				font-family: PingFang SC;
 				font-weight: 500;
 				color: #333333;
+				padding: 0 20upx;
 			}
 
 			text+text {

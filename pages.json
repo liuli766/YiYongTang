@@ -1,30 +1,39 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	"pages": [ //pages数组中第一项表示应用启动页，参考：httpss://uniapp.dcloud.io/collocation/pages
+		
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "穴位查询"
+				"navigationBarTitleText": "穴位查询",
+				"navigationBarBackgroundColor": "#fff"
+			}
+		},{
+			"path": "pages/login/login",
+			"style": {}
+		},
+		{
+			"path": "pages/serch/serch",
+			"style": {
+				"navigationBarTitleText": "搜索"
 			}
 		},
 		{
 			"path": "pages/acupoints/acupoints",
 			"style": {
-				"navigationBarTitleText": "按穴位"
+				"navigationBarTitleText": "按穴位",
+				"navigationBarBackgroundColor": "#fff"
 			}
-		}, {
-			"path": "pages/serch/serch",
-			"style": {
-				"navigationBarTitleText": "搜索"
-			}
-		}, {
+		},  {
 			"path": "pages/Press/Press",
 			"style": {
-				"navigationBarTitleText": "按部位"
+				"navigationBarTitleText": "按部位",
+				"navigationBarBackgroundColor": "#fff"
 			}
 		}, {
 			"path": "pages/case/case",
 			"style": {
-				"navigationBarTitleText": "案例展示"
+				"navigationBarTitleText": "案例展示",
+				"navigationBarBackgroundColor": "#fff"
 			}
 		}, {
 			"path": "pages/caseDetail/caseDetail",
@@ -39,7 +48,8 @@
 		}, {
 			"path": "pages/symptom/symptom",
 			"style": {
-				"navigationBarTitleText": "按症状"
+				"navigationBarTitleText": "按症状",
+				"navigationBarBackgroundColor": "#fff"
 			}
 		}, {
 			"path": "pages/symptomDetail/symptomDetail",
@@ -47,11 +57,9 @@
 				"navigationStyle": "custom" //取消默认的原生导航栏
 			}
 		}
-
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	}
