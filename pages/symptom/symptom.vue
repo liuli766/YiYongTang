@@ -48,7 +48,7 @@
 			return {
 				symptomlist:[],
 				navid: 0,
-				link: 'https://health.jisapp.cn/',
+				link: 'https://www.hlb918.com/',
 				serchbox: false,
 				hotserch: true,
 				SechData:[],
@@ -83,13 +83,17 @@
 				});
 			},
 			getlist(){
+				uni.showLoading({
+				    title: '加载中'
+				});
 				uni.request({
-					url: 'https://health.jisapp.cn/mobile/IndexInfo/sym_cate',
+					url: 'https://www.hlb918.com/mobile/IndexInfo/sym_cate',
 					header: {
 						"X-Requested-With": "XMLhttpsRequest"
 					},
 					method: 'POST',
 					success: (res) => {
+						uni.hideLoading();
 						this.symptomlist = res.data.data
 						
 						console.log(this.symptomlist)
@@ -103,8 +107,11 @@
 				this.serchbox = true;
 				this.hotserch = false;
 				let keyword = value.value
+				uni.showLoading({
+				    title: '加载中'
+				});
 				uni.request({
-					url: 'https://health.jisapp.cn/mobile/IndexInfo/search_list',
+					url: 'https://www.hlb918.com/mobile/IndexInfo/search_list',
 					header: {
 						"X-Requested-With": "XMLhttpsRequest"
 					},
@@ -113,7 +120,7 @@
 					},
 					method: 'POST',
 					success: (res) => {
-						console.log(res.data)
+						uni.hideLoading();
 						this.SechData = res.data.data
 					}
 				});

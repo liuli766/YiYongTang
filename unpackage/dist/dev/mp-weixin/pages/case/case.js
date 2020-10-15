@@ -149,7 +149,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 var _default =
 {
   data: function data() {
@@ -159,8 +158,11 @@ var _default =
 
   },
   onLoad: function onLoad() {var _this = this; //option为object类型，会序列化上个页面传递的参数
+    uni.showLoading({
+      title: '加载中' });
+
     uni.request({
-      url: 'https://health.jisapp.cn/mobile/IndexInfo/case_list',
+      url: 'https://www.hlb918.com/mobile/IndexInfo/case_list',
       header: {
         "X-Requested-With": "XMLhttpsRequest" },
 
@@ -169,6 +171,7 @@ var _default =
 
       method: 'POST',
       success: function success(res) {
+        uni.hideLoading();
         _this.caseList = res.data.data.list;
         console.log(_this.caseList);
       } });

@@ -95,7 +95,7 @@ __webpack_require__.r(__webpack_exports__);
   onLaunch: function onLaunch() {
     console.log('App Launch');
     uni.request({
-      url: 'https://health.jisapp.cn/mobile/Config/sys_config',
+      url: 'https://www.hlb918.com/mobile/Config/sys_config',
       header: {
         "X-Requested-With": "XMLhttpsRequest" },
 

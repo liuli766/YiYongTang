@@ -9,19 +9,15 @@
 						<view class="title">定位&主治功效</view>
 					</view>
 				</view>
-				<view class="bar">
-					
-					<view class="styleinfo">
-						
-						<rich-text :nodes="acuDetail.description"></rich-text>
-					</view>
-				</view>
+
+				<view v-html="acuDetail.description" class="styleinfo"></view>
 			</view>
+
 			<view class="page" v-for="(item,k) in acuDetail.video" :key="k">
 				<video class="video" id="demoVideo" :controls="true" :src="item">
 				</video>
-			
 			</view>
+
 			<view class="contentbox">
 				<view class="bar flex">
 					<view class="flex">
@@ -29,9 +25,9 @@
 						<view class="title">图片展示</view>
 					</view>
 				</view>
-				<image :src="acuDetail.head_pic" style="width: 100%;"></image>
+				<image :src="acuDetail.head_pic" style="width: 100%;" mode="widthFix"></image>
 			</view>
-			
+
 		</view>
 		<view class="footer">
 			<view class="btno flex-c" @tap="goIndex">
@@ -39,7 +35,7 @@
 				<text>首页</text>
 			</view>
 			<button class="fx btnb flex-c" data-name="shareBtn" open-type="share">
-				<image src="../../static/share.png" mode=""></image>
+				<image src="../../static/share.png" mode="widthFix"></image>
 				<text>转发</text>
 			</button>
 		</view>
@@ -54,13 +50,26 @@
 		},
 		data() {
 			return {
-				acuDetail: []
+				acuDetail: [],
+				showbtn: true,
 			}
 		},
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
-			console.log(option)
+			let loging=uni.getStorageSync('isCanUse')
+
+			if(!loging){
+				uni.navigateTo({
+					url: '../login/login'
+				});
+			}
+			wx.showShareMenu({ //分享给好友
+				withShareTicket: true
+			});
+			uni.showLoading({
+			    title: '加载中'
+			});
 			uni.request({
-				url: 'https://health.jisapp.cn/mobile/IndexInfo/acu_detail',
+				url: 'https://www.hlb918.com/mobile/IndexInfo/acu_detail',
 				header: {
 					"X-Requested-With": "XMLhttpsRequest"
 				},
@@ -69,6 +78,7 @@
 				},
 				method: 'POST',
 				success: (res) => {
+					uni.hideLoading();
 					this.acuDetail = res.data.data
 					console.log(this.acuDetail)
 				}
@@ -86,9 +96,19 @@
 				})
 			},
 			onShareAppMessage: function(e) {
+				if (e.from === 'button') {
+					// 来自页面内转发按钮
+					console.log(e.target)
+				}
 				return {
 					title: this.acuDetail.cate_name,
-					path: 'pages/acupointsDetail/acupointsDetail'
+					path: `pages/acupointsDetail/acupointsDetail?title=${this.acuDetail.id}`,
+					success: function(res) { // 分享成功之后的操作
+						console.log("分享成功:" + JSON.stringify(res));
+					},
+					fail: function(res) { // 分享失败之后的操作
+						console.log("分享失败:" + JSON.stringify(res));
+					}
 				}
 			}
 		}
@@ -99,16 +119,13 @@
 	.main {
 		margin: 30upx;
 		margin-bottom: 120upx;
-		img{
+		-webkit-overflow-scrolling: touch;
+
+		img {
 			width: 100% !important;
 			height: 100% !important;
 		}
-		.page video {
-			width: 690upx;
-			height: 320upx;
-			border-radius: 6upx;
-			margin-bottom: 120upx;
-		}
+
 		.tips {
 			font-size: 24upx;
 			font-family: PingFang SC;
@@ -118,17 +135,25 @@
 		}
 
 		.styleinfo {
-			rich-text{
-				font-size: 28upx;
-				font-family: PingFang SC;
-				font-weight: 500;
-				color: #333333;
-				image{
-					height:100% !important;
-					width: 100% !important;
-				}
-			}
-			
+			font-size: 28upx;
+			font-family: PingFang SC;
+			font-weight: 500;
+			color: #333333;
+
 		}
+	}
+
+	.page {
+		box-sizing: border-box;
+		height: 320upx;
+		position: relative;
+	}
+
+	.page video {
+		width: 690upx;
+		height: 320upx;
+		border-radius: 6upx;
+		margin-bottom: 120upx;
+
 	}
 </style>

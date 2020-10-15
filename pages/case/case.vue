@@ -11,7 +11,6 @@
 				<text class="intro two-ell" v-html="item.description"></text>
 				<view class="item-bot flex-b-c">
 					<text>{{item.create_time}}</text>
-					<text>甲亢</text>
 				</view>
 			</view>
 		</view>
@@ -27,8 +26,11 @@
 			}
 		},
 		onLoad: function() { //option为object类型，会序列化上个页面传递的参数
+			uni.showLoading({
+			    title: '加载中'
+			});
 			uni.request({
-				url: 'https://health.jisapp.cn/mobile/IndexInfo/case_list',
+				url: 'https://www.hlb918.com/mobile/IndexInfo/case_list',
 				header: {
 					"X-Requested-With": "XMLhttpsRequest"
 				},
@@ -37,6 +39,7 @@
 				},
 				method: 'POST',
 				success: (res) => {
+					uni.hideLoading();
 					this.caseList = res.data.data.list
 					console.log(this.caseList)
 				}

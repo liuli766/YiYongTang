@@ -65,14 +65,17 @@
 		},
 		onLoad() {
 				this.loadOldKeyword()
+				uni.showLoading({
+				    title: '加载中'
+				});
 				uni.request({
-					url: 'https://health.jisapp.cn/mobile/Config/sys_config',
+					url: 'https://www.hlb918.com/mobile/Config/sys_config',
 					header: {
 						"X-Requested-With": "XMLhttpsRequest"
 					},
 					method: 'POST',
 					success: (res) => {
-						
+						 uni.hideLoading();
 						this.hotList=res.data.data.hot_search
 						this.hotList=this.hotList.split(",")
 						console.log(this.hotList,'热门')
@@ -114,7 +117,7 @@
 				this.hotserch = false;
 				let keyword = value.value||value
 				uni.request({
-					url: 'https://health.jisapp.cn/mobile/IndexInfo/search_list',
+					url: 'https://www.hlb918.com/mobile/IndexInfo/search_list',
 					header: {
 						"X-Requested-With": "XMLhttpsRequest"
 					},

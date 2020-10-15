@@ -179,25 +179,29 @@ var _default =
   data: function data() {
     return {
       swiperlist: [],
-      link: 'https://health.jisapp.cn',
+      link: 'https://www.hlb918.com',
       isCanUse: uni.getStorageSync('isCanUse') };
 
   },
   onLoad: function onLoad() {var _this = this;
+    uni.showLoading({
+      title: '加载中' });
 
     uni.request({
-      url: 'https://health.jisapp.cn/mobile/Config/banner', //仅为示例，并非真实接口地址。
+      url: 'https://www.hlb918.com/mobile/Config/banner', //仅为示例，并非真实接口地址。
       header: {
         "X-Requested-With": "XMLhttpsRequest" },
 
       method: 'POST',
       success: function success(res) {
+        uni.hideLoading();
         _this.swiperlist = res.data.data;
         console.log(_this.swiperlist);
       } });
 
   },
   methods: {
+
     getlogin: function getlogin() {
 
       if (!this.isCanUse) {

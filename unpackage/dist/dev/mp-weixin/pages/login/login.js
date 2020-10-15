@@ -247,7 +247,7 @@ var _default =
         that.encryptedData = e.detail.encryptedData;
         that.iv = e.detail.iv;
         uni.request({
-          url: 'https://health.jisapp.cn/mobile/UserLogin/wx_login', //仅为示例，并非真实接口地址。
+          url: 'https://www.hlb918.com/mobile/UserLogin/wx_login', //仅为示例，并非真实接口地址。
           header: {
             "X-Requested-With": "XMLhttpsRequest" },
 

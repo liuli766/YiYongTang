@@ -177,25 +177,29 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   onLoad: function onLoad() {var _this = this;
+    uni.showLoading({
+      title: '加载中' });
+
     uni.request({
-      url: 'https://health.jisapp.cn/mobile/IndexInfo/acu_cate',
+      url: 'https://www.hlb918.com/mobile/IndexInfo/acu_cate',
       header: {
         "X-Requested-With": "XMLhttpsRequest" },
 
       method: 'POST',
       success: function success(res) {
+        uni.hideLoading();
         _this.acupointsList = res.data.data;
         console.log(_this.acupointsList);
       } });
 
     uni.request({
-      url: 'https://health.jisapp.cn/mobile/Config/sys_config',
+      url: 'https://www.hlb918.com/mobile/Config/sys_config',
       header: {
         "X-Requested-With": "XMLhttpsRequest" },
 
       method: 'POST',
       success: function success(res) {
-
+        uni.hideLoading();
         _this.hotList = res.data.data.hot_search;
         _this.hotList = _this.hotList.split(",");
         console.log(_this.hotList);
@@ -207,11 +211,14 @@ __webpack_require__.r(__webpack_exports__);
       this.search(value);
     },
     search: function search(value) {var _this2 = this; //搜索功能
+      uni.showLoading({
+        title: '加载中' });
+
       this.serchbox = true;
       this.hotserch = false;
       var keyword = value.value || value;
       uni.request({
-        url: 'https://health.jisapp.cn/mobile/IndexInfo/acu_cate',
+        url: 'https://www.hlb918.com/mobile/IndexInfo/acu_cate',
         header: {
           "X-Requested-With": "XMLhttpsRequest" },
 
@@ -220,6 +227,7 @@ __webpack_require__.r(__webpack_exports__);
 
         method: 'POST',
         success: function success(res) {
+          uni.hideLoading();
           _this2.acupointsList = res.data.data;
           console.log(_this2.acupointsList);
         } });

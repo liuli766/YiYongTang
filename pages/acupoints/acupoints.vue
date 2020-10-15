@@ -12,11 +12,11 @@
 			<view class="serchcontent flex-a-c flex-warp-col-b">
 				<text class="flex-c" v-for="(val,k) in hotList" :key="k" @tap="Fserch(val)">{{val}}</text>
 			</view>
-			
+
 		</view>
-		
+
 		<!-- IndexedList  -->
-		<uni-indexed-list :acupointsList="acupointsList" ></uni-indexed-list>
+		<uni-indexed-list :acupointsList="acupointsList"></uni-indexed-list>
 	</view>
 </template>
 
@@ -34,53 +34,61 @@
 				SechData: [],
 				serchbox: false,
 				hotserch: true,
-				hotList:[],
+				hotList: [],
 			}
 		},
 		onLoad() {
+			uni.showLoading({
+				title: '加载中'
+			});
 			uni.request({
-				url: 'https://health.jisapp.cn/mobile/IndexInfo/acu_cate',
+				url: 'https://www.hlb918.com/mobile/IndexInfo/acu_cate',
 				header: {
 					"X-Requested-With": "XMLhttpsRequest"
 				},
 				method: 'POST',
 				success: (res) => {
+					uni.hideLoading();
 					this.acupointsList = res.data.data
 					console.log(this.acupointsList)
 				}
 			});
 			uni.request({
-				url: 'https://health.jisapp.cn/mobile/Config/sys_config',
+				url: 'https://www.hlb918.com/mobile/Config/sys_config',
 				header: {
 					"X-Requested-With": "XMLhttpsRequest"
 				},
 				method: 'POST',
 				success: (res) => {
-					
-					this.hotList=res.data.data.hot_search
-					this.hotList=this.hotList.split(",")
+					uni.hideLoading();
+					this.hotList = res.data.data.hot_search
+					this.hotList = this.hotList.split(",")
 					console.log(this.hotList)
 				}
 			});
 		},
 		methods: {
-			Fserch(value){
+			Fserch(value) {
 				this.search(value)
 			},
 			search(value) { //搜索功能
+				uni.showLoading({
+					title: '加载中'
+				});
 				this.serchbox = true;
 				this.hotserch = false;
-				let keyword = value.value||value
+				let keyword = value.value || value
 				uni.request({
-					url: 'https://health.jisapp.cn/mobile/IndexInfo/acu_cate',
+					url: 'https://www.hlb918.com/mobile/IndexInfo/acu_cate',
 					header: {
 						"X-Requested-With": "XMLhttpsRequest"
 					},
 					data: {
-						cate_name:keyword,
+						cate_name: keyword,
 					},
 					method: 'POST',
 					success: (res) => {
+						uni.hideLoading();
 						this.acupointsList = res.data.data
 						console.log(this.acupointsList)
 					}
@@ -143,5 +151,4 @@
 			}
 		}
 	}
-
 </style>

@@ -201,14 +201,17 @@ __webpack_require__.r(__webpack_exports__);
   },
   onLoad: function onLoad() {var _this = this;
     this.loadOldKeyword();
+    uni.showLoading({
+      title: '加载中' });
+
     uni.request({
-      url: 'https://health.jisapp.cn/mobile/Config/sys_config',
+      url: 'https://www.hlb918.com/mobile/Config/sys_config',
       header: {
         "X-Requested-With": "XMLhttpsRequest" },
 
       method: 'POST',
       success: function success(res) {
-
+        uni.hideLoading();
         _this.hotList = res.data.data.hot_search;
         _this.hotList = _this.hotList.split(",");
         console.log(_this.hotList, '热门');
@@ -250,7 +253,7 @@ __webpack_require__.r(__webpack_exports__);
       this.hotserch = false;
       var keyword = value.value || value;
       uni.request({
-        url: 'https://health.jisapp.cn/mobile/IndexInfo/search_list',
+        url: 'https://www.hlb918.com/mobile/IndexInfo/search_list',
         header: {
           "X-Requested-With": "XMLhttpsRequest" },
 

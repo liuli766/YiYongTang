@@ -252,16 +252,11 @@
 .main.data-v-234c4154 {
   margin: 30rpx;
   margin-bottom: 120rpx;
+  -webkit-overflow-scrolling: touch;
 }
 .main ._img.data-v-234c4154 {
   width: 100% !important;
   height: 100% !important;
-}
-.main .page video.data-v-234c4154 {
-  width: 690rpx;
-  height: 320rpx;
-  border-radius: 6rpx;
-  margin-bottom: 120rpx;
 }
 .main .tips.data-v-234c4154 {
   font-size: 24rpx;
@@ -270,14 +265,21 @@
   color: #999999;
   line-height: 44rpx;
 }
-.main .styleinfo rich-text.data-v-234c4154 {
+.main .styleinfo.data-v-234c4154 {
   font-size: 28rpx;
   font-family: PingFang SC;
   font-weight: 500;
   color: #333333;
 }
-.main .styleinfo rich-text image.data-v-234c4154 {
-  height: 100% !important;
-  width: 100% !important;
+.page.data-v-234c4154 {
+  box-sizing: border-box;
+  height: 320rpx;
+  position: relative;
+}
+.page video.data-v-234c4154 {
+  width: 690rpx;
+  height: 320rpx;
+  border-radius: 6rpx;
+  margin-bottom: 120rpx;
 }
 

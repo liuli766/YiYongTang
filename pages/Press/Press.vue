@@ -48,7 +48,7 @@
 			return {
 				pressList: [],
 				navid: 0,
-				link: 'https://health.jisapp.cn/',
+				link: 'https://www.hlb918.com/',
 				SechData: [],
 				serchbox: false,
 				hotserch: true,
@@ -69,13 +69,17 @@
 					that.windowHeight=res.windowHeight
 			    }
 			});
+			uni.showLoading({
+			    title: '加载中'
+			});
 			uni.request({
-				url: 'https://health.jisapp.cn/mobile/IndexInfo/pst_cate',
+				url: 'https://www.hlb918.com/mobile/IndexInfo/pst_cate',
 				header: {
 					"X-Requested-With": "XMLhttpsRequest"
 				},
 				method: 'POST',
 				success: (res) => {
+					uni.hideLoading();
 					this.pressList = res.data.data
 					
 					console.log(this.pressList)
@@ -99,8 +103,11 @@
 				this.serchbox = true;
 				this.hotserch = false;
 				let keyword = value.value
+				uni.showLoading({
+				    title: '加载中'
+				});
 				uni.request({
-					url: 'https://health.jisapp.cn/mobile/IndexInfo/search_list',
+					url: 'https://www.hlb918.com/mobile/IndexInfo/search_list',
 					header: {
 						"X-Requested-With": "XMLhttpsRequest"
 					},
@@ -109,6 +116,7 @@
 					},
 					method: 'POST',
 					success: (res) => {
+						uni.hideLoading();
 						console.log(res.data)
 						this.SechData = res.data.data
 					}

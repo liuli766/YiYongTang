@@ -3,7 +3,7 @@
 		onLaunch: function() {
 			console.log('App Launch')
 			uni.request({
-				url: 'https://health.jisapp.cn/mobile/Config/sys_config',
+				url: 'https://www.hlb918.com/mobile/Config/sys_config',
 				header: {
 					"X-Requested-With": "XMLhttpsRequest"
 				},

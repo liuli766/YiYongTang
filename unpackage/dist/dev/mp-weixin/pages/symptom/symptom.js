@@ -184,7 +184,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       symptomlist: [],
       navid: 0,
-      link: 'https://health.jisapp.cn/',
+      link: 'https://www.hlb918.com/',
       serchbox: false,
       hotserch: true,
       SechData: [],
@@ -219,13 +219,17 @@ __webpack_require__.r(__webpack_exports__);
 
     },
     getlist: function getlist() {var _this = this;
+      uni.showLoading({
+        title: '加载中' });
+
       uni.request({
-        url: 'https://health.jisapp.cn/mobile/IndexInfo/sym_cate',
+        url: 'https://www.hlb918.com/mobile/IndexInfo/sym_cate',
         header: {
           "X-Requested-With": "XMLhttpsRequest" },
 
         method: 'POST',
         success: function success(res) {
+          uni.hideLoading();
           _this.symptomlist = res.data.data;
 
           console.log(_this.symptomlist);
@@ -239,8 +243,11 @@ __webpack_require__.r(__webpack_exports__);
       this.serchbox = true;
       this.hotserch = false;
       var keyword = value.value;
+      uni.showLoading({
+        title: '加载中' });
+
       uni.request({
-        url: 'https://health.jisapp.cn/mobile/IndexInfo/search_list',
+        url: 'https://www.hlb918.com/mobile/IndexInfo/search_list',
         header: {
           "X-Requested-With": "XMLhttpsRequest" },
 
@@ -249,7 +256,7 @@ __webpack_require__.r(__webpack_exports__);
 
         method: 'POST',
         success: function success(res) {
-          console.log(res.data);
+          uni.hideLoading();
           _this2.SechData = res.data.data;
         } });
 

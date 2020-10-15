@@ -206,9 +206,23 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   onLoad: function onLoad(option) {var _this = this; //option为object类型，会序列化上个页面传递的参数
+    var loging = uni.getStorageSync('isCanUse');
+
+    if (!loging) {
+      uni.navigateTo({
+        url: '../login/login' });
+
+    }
     console.log(option);
+    wx.showShareMenu({ //分享给好友
+      withShareTicket: true });
+
+
+    uni.showLoading({
+      title: '加载中' });
+
     uni.request({
-      url: 'https://health.jisapp.cn/mobile/IndexInfo/case_detail',
+      url: 'https://www.hlb918.com/mobile/IndexInfo/case_detail',
       header: {
         "X-Requested-With": "XMLhttpsRequest" },
 
@@ -217,6 +231,7 @@ __webpack_require__.r(__webpack_exports__);
 
       method: 'POST',
       success: function success(res) {
+        uni.hideLoading();
         _this.caseDetail = res.data.data;
         console.log(_this.caseDetail);
       } });
@@ -236,7 +251,13 @@ __webpack_require__.r(__webpack_exports__);
     onShareAppMessage: function onShareAppMessage(e) {
       return {
         title: this.caseDetail.case_title,
-        path: 'pages/caseDetail/caseDetail' };
+        path: "pages/caseDetail/caseDetail?title=".concat(this.caseDetail.id),
+        success: function success(res) {// 分享成功之后的操作
+          console.log("分享成功:" + JSON.stringify(res));
+        },
+        fail: function fail(res) {// 分享失败之后的操作
+          console.log("分享失败:" + JSON.stringify(res));
+        } };
 
     },
     goacupoints: function goacupoints(c) {

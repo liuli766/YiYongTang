@@ -9,10 +9,6 @@
 			<view class="intro" v-html="caseDetail.description"></view>
 			<text class="time">发布时间：{{caseDetail.create_time}}</text>
 			
-			<view class="page" v-for="(item,k) in caseDetail.video" :key="k">
-				<video class="video" id="demoVideo" :controls="true" :src="item">
-				</video>
-			</view>
 			<view class="contentbox" style="padding:0;">
 				<view class="bar flex">
 					<view class="flex">
@@ -32,15 +28,19 @@
 				</view>
 				<view class="tips" v-html="caseDetail.tips"> </view>
 			</view>
+			<view class="page" v-for="(item,k) in caseDetail.video" :key="k">
+				<video class="video" id="demoVideo" :controls="true" :src="item">
+				</video>
+			</view>
 			<view class="contentbox" style="padding: 0;">
 				<view class="bar flex">
 					<view class="flex">
 						<view class="line"></view>
-						<view class="title">调理穴位</view>
+						<view class="title">调理穴位&nbsp;（点击穴位图片查看详细视频）</view>
 					</view>
 				</view>
 				<view v-for="(item,k) in caseDetail.acu" @tap="goacupoints(item)">
-					<image :src="item.sub.head_pic" style="width: 100%;" ></image>
+					<image :src="item.sub.head_pic" style="width: 100%;" mode="widthFix"></image>
 				</view>
 			</view>
 		</view>
@@ -70,9 +70,23 @@
 			}
 		},
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
+		let loging=uni.getStorageSync('isCanUse')
+		
+		if(!loging){
+			uni.navigateTo({
+				url: '../login/login'
+			});
+		}
 			console.log(option)
+			wx.showShareMenu({//分享给好友
+				withShareTicket: true
+			});
+			
+			uni.showLoading({
+			    title: '加载中'
+			});
 			uni.request({
-				url: 'https://health.jisapp.cn/mobile/IndexInfo/case_detail',
+				url: 'https://www.hlb918.com/mobile/IndexInfo/case_detail',
 				header: {
 					"X-Requested-With": "XMLhttpsRequest"
 				},
@@ -81,6 +95,7 @@
 				},
 				method: 'POST',
 				success: (res) => {
+					uni.hideLoading();
 					this.caseDetail = res.data.data
 					console.log(this.caseDetail)
 				}
@@ -100,7 +115,13 @@
 			onShareAppMessage: function(e) {
 				return {
 					title: this.caseDetail.case_title,
-					path: 'pages/caseDetail/caseDetail'
+					path: `pages/caseDetail/caseDetail?title=${this.caseDetail.id}`,
+					success: function(res) { // 分享成功之后的操作
+						console.log("分享成功:" + JSON.stringify(res));
+					},
+					fail: function(res) { // 分享失败之后的操作
+						console.log("分享失败:" + JSON.stringify(res));
+					}
 				}
 			},
 			goacupoints(c){
